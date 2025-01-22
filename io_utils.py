@@ -10,7 +10,7 @@ def codon_stats_to_csv(codon_stats, output_file_path, bam_file_path, codon_start
   
   basename = os.path.basename(bam_file_path)
   smpl_id = basename.replace('.fastq.gz.bam', '')
-  output_path = f"{output_file_path}/{smpl_id}_{codon_start_pos}_complex_freqs.csv"
+  output_path = f"{output_file_path}/{smpl_id}_{'-'.join([str(pos) for pos in codon_start_pos])}_complex_freqs.csv"
   df.to_csv(output_path, index=False)
   
 def open_and_validate_bam(bam_file):
