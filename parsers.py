@@ -1,4 +1,5 @@
 import pysam
+import sys
 from collections import defaultdict, Counter
 from utils import calc_freq
 from io_utils import open_and_validate_bam
@@ -71,6 +72,5 @@ def extract_codon_frequencies(bam_file, codon_start_pos):
     return process_pileup(bam, codon_start_pos)
   except Exception as e:
     print(e)
-  finally:
-    bam.close()
+    sys.exit(1)
 
