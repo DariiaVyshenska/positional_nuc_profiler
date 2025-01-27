@@ -3,10 +3,7 @@ import sys
 from collections import defaultdict, Counter
 from utils import calc_freq
 from io_utils import open_and_validate_bam
-
-MIN_BASE_QUALITY = 0 # will be 13 default
-MIN_MAPPING_QUALITY = 0 # will be 0 default
-MAX_DEPTH = 8000
+from exceptions import RefError
 
 class Read():
   def __init__(self, positions):
@@ -18,11 +15,13 @@ class Read():
   def complete(self):
     return all(list(self.nucleotides.values()))
   
-
-def process_pileup(bam, nucleotide_positions):
+def process_pileup(bam, nucleotide_positions, min_base_qual, min_mapping_qual, max_depth):    
   updated_nt_pos = [pos - 1 for pos in sorted(nucleotide_positions)]
   pileup_start = updated_nt_pos[0]
   pileup_end = nucleotide_positions[-1]
+  if pileup_end > bam.lengths[0]:
+    bam.close()
+    raise RefError('RefError: one or more nucleotide_positions exceed the length of the reference sequence.')
   
   reads = defaultdict(lambda: Read(updated_nt_pos))
   ref_name = bam.references[0]
@@ -30,9 +29,9 @@ def process_pileup(bam, nucleotide_positions):
   for pileup_column in bam.pileup(reference=ref_name, 
                                   start=pileup_start, 
                                   stop=pileup_end, 
-                                  min_base_quality=MIN_BASE_QUALITY,
-                                  min_mapping_quality=MIN_MAPPING_QUALITY,
-                                  max_depth=MAX_DEPTH, 
+                                  min_base_quality=min_base_qual,
+                                  min_mapping_quality=min_mapping_qual,
+                                  max_depth=max_depth, 
                                   truncate=True):
     ref_pos = pileup_column.reference_pos
     
@@ -63,13 +62,14 @@ def process_pileup(bam, nucleotide_positions):
   
   return combo_fr_count
 
-
-def extract_codon_frequencies(bam_file, codon_start_pos):
+# collect nt positions and andy defaults into **kwarg (check the spelling here)
+def extract_codon_frequencies(bam_file, nt_args):
   try:
     bam = open_and_validate_bam(bam_file)
-    # codon_counts, total_reads = process_pileup(bam, codon_start_pos)
+    # codon_counts, total_reads = process_pileup(bam, codon_start_pos)  # check if this is still needed
     # return calc_freq(codon_counts, total_reads)
-    return process_pileup(bam, codon_start_pos)
+
+    return process_pileup(bam, **nt_args)
   except Exception as e:
     print(e)
     sys.exit(1)
