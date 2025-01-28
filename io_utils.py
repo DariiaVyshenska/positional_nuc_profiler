@@ -4,14 +4,17 @@ import os
 import sys
 from exceptions import RefError
 
-def codon_stats_to_csv(codon_stats, output_file_path, file_basename, positions_str):
+def get_output_file_path(output_file_path, bam_file_path, nt_positions):
   os.makedirs(output_file_path, exist_ok=True)
+  bam_file_basename = os.path.basename(bam_file_path)
+  smpl_id = bam_file_basename.removesuffix('.fastq.gz.bam').removesuffix('.bam')
+  positions_str = '-'.join([str(pos) for pos in nt_positions])
+  return f"{output_file_path}/{smpl_id}_{positions_str}_complex_freqs.csv"
+
+def codon_stats_to_csv(codon_stats, output_path):
   df = pd.DataFrame(codon_stats, columns=['CODON', 'FREQUENCY', 'DEPTH'])
   df = df.sort_values(by='FREQUENCY', ascending=False)
   print(df)
-
-  smpl_id = file_basename.replace('.fastq.gz.bam', '')  # need to also remove just the ".bam" for normal people to use, not just RAVA output
-  output_path = f"{output_file_path}/{smpl_id}_{positions_str}_complex_freqs.csv"
   df.to_csv(output_path, index=False)
 
 def validate_bam_index(bam_file):

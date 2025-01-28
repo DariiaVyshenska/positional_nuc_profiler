@@ -8,14 +8,12 @@ Created on Tue Aug  6 09:47:33 2024
 import argparse
 import os
 from parsers import extract_codon_frequencies
-from io_utils import codon_stats_to_csv
+from io_utils import codon_stats_to_csv, get_output_file_path
 
 def main(bam_file_path, output_file_path, nt_args):
   codon_frequencies = extract_codon_frequencies(bam_file_path, nt_args)
-  bam_file_basename = os.path.basename(bam_file_path) # might extract the parsing of output filename (only filename? or 
-  #the output path altogether?) into a deparate function to avoid cluttering "to_csv" or splitting logic between main and "to_csv"
-  positions_str = '-'.join([str(pos) for pos in nt_args["nucleotide_positions"]])
-  codon_stats_to_csv(codon_frequencies, output_file_path, bam_file_basename, positions_str) # this function was not yet changed to work with a list of requested nucleotide positions
+  output_path = get_output_file_path(output_file_path, bam_file_path, nt_args["nucleotide_positions"])
+  codon_stats_to_csv(codon_frequencies, output_path)
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser(description='Extracts frequencies of complex mutations from INDEXED .bam file.',
@@ -23,7 +21,7 @@ if __name__ == '__main__':
                                   formatter_class=argparse.ArgumentDefaultsHelpFormatter)
   parser.add_argument('indexed_bam_path', type=str, help='Path to the INDEXED bam file')
   parser.add_argument('output_path', type=str, help='Path to a directory where the output CSV will be saved')
-  parser.add_argument('nucleotide_positions', type=int, nargs='+', help='Two or more nucleotide positions in the reference. 1-based indexation.')
+  parser.add_argument('nucleotide_positions', type=int, nargs='+', help='Two or more unique, positive nucleotide positions in the reference (1-based indexing).')
   parser.add_argument('--min_base_qual', type=int, default=13, metavar='', help='Minimum base quality. Bases below the minimum quality will not be counted in.')
   parser.add_argument('--min_mapping_qual', type=int, default=0, metavar='', help='Mininum mapping quality. Only use reads above a minimum mapping quality.')
   parser.add_argument('--max_depth', type=int, default=8000, metavar='', help='Maximum read depth permitted.')
