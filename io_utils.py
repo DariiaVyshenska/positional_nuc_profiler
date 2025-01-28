@@ -5,7 +5,11 @@ import sys
 from exceptions import RefError
 
 def get_output_file_path(output_file_path, bam_file_path, nt_positions):
-  os.makedirs(output_file_path, exist_ok=True)
+  try:
+    os.makedirs(output_file_path, exist_ok=True)
+  except OSError as e:
+    raise ValueError(f"Failed to create output directory: {output_file_path}. Error: {e}")
+  
   bam_file_basename = os.path.basename(bam_file_path)
   smpl_id = bam_file_basename.removesuffix('.fastq.gz.bam').removesuffix('.bam')
   positions_str = '-'.join([str(pos) for pos in nt_positions])

@@ -7,13 +7,18 @@ Created on Tue Aug  6 09:47:33 2024
 """
 import argparse
 import os
+import sys
 from parsers import extract_codon_frequencies
 from io_utils import codon_stats_to_csv, get_output_file_path
 
 def main(bam_file_path, output_file_path, nt_args):
-  codon_frequencies = extract_codon_frequencies(bam_file_path, nt_args)
-  output_path = get_output_file_path(output_file_path, bam_file_path, nt_args["nucleotide_positions"])
-  codon_stats_to_csv(codon_frequencies, output_path)
+  try:
+    codon_frequencies = extract_codon_frequencies(bam_file_path, nt_args)
+    output_path = get_output_file_path(output_file_path, bam_file_path, nt_args["nucleotide_positions"])
+    codon_stats_to_csv(codon_frequencies, output_path)
+  except Exception as e:
+    print(e)
+    sys.exit(1)
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser(description='Extracts frequencies of complex mutations from INDEXED .bam file.',

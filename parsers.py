@@ -62,15 +62,12 @@ def process_pileup(bam, nucleotide_positions, min_base_qual, min_mapping_qual, m
   
   return combo_fr_count
 
-# collect nt positions and andy defaults into **kwarg (check the spelling here)
 def extract_codon_frequencies(bam_file, nt_args):
-  try:
-    bam = open_and_validate_bam(bam_file)
-    # codon_counts, total_reads = process_pileup(bam, codon_start_pos)  # check if this is still needed
-    # return calc_freq(codon_counts, total_reads)
+  bam = open_and_validate_bam(bam_file)
+  return process_pileup(bam, **nt_args)
 
-    return process_pileup(bam, **nt_args)
-  except Exception as e:
-    print(e)
-    sys.exit(1)
+  #   # codon_counts, total_reads = process_pileup(bam, codon_start_pos)  # check if this is still needed
+  #   # return calc_freq(codon_counts, total_reads)
+
+
 
