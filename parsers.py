@@ -1,26 +1,17 @@
 import pysam
 import sys
-from collections import defaultdict, Counter
-from utils import calc_freq
+from stats import get_combo_fr_count
+from collections import defaultdict
 from io_utils import open_and_validate_bam
+from models import Read
 from exceptions import RefError
 
-class Read():
-  def __init__(self, positions):
-    self.nucleotides = {pos: None for pos in positions}
-  
-  def __repr__(self):
-    return ''.join([nt if nt else 'N' for nt in self.nucleotides.values()])
-
-  def complete(self):
-    return all(list(self.nucleotides.values()))
-  
-def process_pileup(bam, nucleotide_positions, min_base_qual, min_mapping_qual, max_depth):    
-  updated_nt_pos = [pos - 1 for pos in sorted(nucleotide_positions)]
+def process_pileup(bam, nucleotide_positions, min_base_qual, min_mapping_qual, max_depth):
+  sorted_nt_pos = sorted(nucleotide_positions)
+  updated_nt_pos = [pos - 1 for pos in sorted_nt_pos]
   pileup_start = updated_nt_pos[0]
   pileup_end = nucleotide_positions[-1]
   if pileup_end > bam.lengths[0]:
-    bam.close()
     raise RefError('RefError: one or more nucleotide_positions exceed the length of the reference sequence.')
   
   reads = defaultdict(lambda: Read(updated_nt_pos))
@@ -34,41 +25,23 @@ def process_pileup(bam, nucleotide_positions, min_base_qual, min_mapping_qual, m
                                   max_depth=max_depth, 
                                   truncate=True):
     ref_pos = pileup_column.reference_pos
-    
     if ref_pos not in updated_nt_pos:
       continue
-    
+
     print("Processing reference position: ", ref_pos + 1)
 
     for pileup_read in pileup_column.pileups:
-
       read_pos = pileup_read.query_position
-      read_id = pileup_read.alignment.query_name
-      read_seq = pileup_read.alignment.query_sequence
-        
       if read_pos is None:
         continue
-
+      
+      read_id = pileup_read.alignment.query_name
+      read_seq = pileup_read.alignment.query_sequence
       reads[read_id].nucleotides[ref_pos] = read_seq[read_pos]
 
-  complete_nt_combos = [repr(read) for read in reads.values() if read.complete()]
-  total_reads = len(complete_nt_combos)
-  tally = Counter(complete_nt_combos)
-  combo_fr_count = [ (combo, round(count/total_reads, 4), count) for combo, count in tally.items()]
+  return reads
 
-  print("\nTotal number of reads processed across all reference positions: ", len(reads), "\n")
-  print('All detected nucleotide combinations & their depths are:')
-  for nts, count in Counter([repr(read) for read in reads.values()]).items():
-    print(f'{nts}: {count}')
-
-  return combo_fr_count
 
 def extract_codon_frequencies(bam_file, nt_args):
-  bam = open_and_validate_bam(bam_file)
-  return process_pileup(bam, **nt_args)
-
-  #   # codon_counts, total_reads = process_pileup(bam, codon_start_pos)  # check if this is still needed
-  #   # return calc_freq(codon_counts, total_reads)
-
-
-
+  with open_and_validate_bam(bam_file) as bam:
+    return get_combo_fr_count(process_pileup(bam, **nt_args))

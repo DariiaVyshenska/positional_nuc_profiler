@@ -31,7 +31,6 @@ def validate_bam_index(bam_file):
 def open_and_validate_bam(bam_file):
   bam = pysam.AlignmentFile(bam_file, "rb")
   validate_bam_index(bam_file)
-  if len(bam.references) != 1:
-    bam.close()
+  if not bam.lengths or len(bam.references) != 1:
     raise RefError('RefError: input .bam must contain one and only one reference (chromosome)')
   return bam
