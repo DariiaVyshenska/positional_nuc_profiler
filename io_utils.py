@@ -18,6 +18,7 @@ def get_output_file_path(output_file_path, bam_file_path, nt_positions):
 def codon_stats_to_csv(codon_stats, output_path):
   df = pd.DataFrame(codon_stats, columns=['CODON', 'FREQUENCY', 'DEPTH'])
   df = df.sort_values(by='FREQUENCY', ascending=False)
+  print("\nSelected nucleotide combinations (final results):")
   print(df)
   df.to_csv(output_path, index=False)
 

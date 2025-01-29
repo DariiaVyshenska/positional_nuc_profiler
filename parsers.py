@@ -38,7 +38,7 @@ def process_pileup(bam, nucleotide_positions, min_base_qual, min_mapping_qual, m
     if ref_pos not in updated_nt_pos:
       continue
     
-    print("Current position is: ", ref_pos) # tmp, for dev mode
+    print("Processing reference position: ", ref_pos + 1)
 
     for pileup_read in pileup_column.pileups:
 
@@ -56,10 +56,11 @@ def process_pileup(bam, nucleotide_positions, min_base_qual, min_mapping_qual, m
   tally = Counter(complete_nt_combos)
   combo_fr_count = [ (combo, round(count/total_reads, 4), count) for combo, count in tally.items()]
 
-  print("total length is: ", len(reads))  #temporary
-  print("full tally")  #temporary
-  print(Counter([repr(read) for read in reads.values()]))  #temporary
-  
+  print("\nTotal number of reads processed across all reference positions: ", len(reads), "\n")
+  print('All detected nucleotide combinations & their depths are:')
+  for nts, count in Counter([repr(read) for read in reads.values()]).items():
+    print(f'{nts}: {count}')
+
   return combo_fr_count
 
 def extract_codon_frequencies(bam_file, nt_args):
