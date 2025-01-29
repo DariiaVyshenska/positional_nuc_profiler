@@ -6,7 +6,6 @@ Created on Tue Aug  6 09:47:33 2024
 @author: Dariia Vyshenska
 """
 import argparse
-import os
 import sys
 from parsers import extract_codon_frequencies
 from io_utils import codon_stats_to_csv, get_output_file_path
