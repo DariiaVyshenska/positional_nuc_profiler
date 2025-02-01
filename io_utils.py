@@ -14,7 +14,8 @@ def get_output_file_path(output_file_path, bam_file_path, nt_positions):
   bam_file_basename = os.path.basename(bam_file_path)
   smpl_id = bam_file_basename.removesuffix('.fastq.gz.bam').removesuffix('.bam')
   positions_str = '-'.join(map(str, nt_positions))
-  return f"{output_file_path}/{smpl_id}_{positions_str}_complex_freqs.csv"
+  return os.path.join(output_file_path, 
+                      f"{smpl_id}_{positions_str}_complex_freqs.csv")
 
 def nt_combo_stats_to_csv(nt_combo_stats, output_path):
   df = pd.DataFrame(nt_combo_stats, columns=['NUCLEOTIDE_COMBOS', 'FREQUENCY', 'DEPTH'])
