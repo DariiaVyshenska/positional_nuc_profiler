@@ -13,7 +13,9 @@ from io_utils import codon_stats_to_csv, get_output_file_path
 def main(bam_file_path, output_file_path, nt_args):
   try:
     codon_frequencies = extract_codon_frequencies(bam_file_path, nt_args)
-    output_path = get_output_file_path(output_file_path, bam_file_path, nt_args["nucleotide_positions"])
+    output_path = get_output_file_path(
+      output_file_path, bam_file_path, nt_args["nucleotide_positions"]
+      )
     codon_stats_to_csv(codon_frequencies, output_path)
   except Exception as e:
     print(e)
