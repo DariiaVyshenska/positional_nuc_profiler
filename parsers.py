@@ -1,5 +1,6 @@
 import pysam
 import sys
+import logging
 from stats import get_combo_fr_count
 from collections import defaultdict
 from io_utils import open_and_validate_bam
@@ -14,6 +15,7 @@ def process_pileup(bam, nucleotide_positions, min_base_qual, min_mapping_qual, m
   if pileup_end > bam.lengths[0]:
     raise RefError('RefError: one or more nucleotide_positions exceed the length of the reference sequence.')
   
+  logging.info("Starting data extraction...")
   reads = defaultdict(lambda: Read(updated_nt_pos))
   ref_name = bam.references[0]
 
@@ -28,7 +30,7 @@ def process_pileup(bam, nucleotide_positions, min_base_qual, min_mapping_qual, m
     if ref_pos not in updated_nt_pos:
       continue
 
-    print("Processing reference position: ", ref_pos + 1)
+    logging.info(f"Processing reference position: {ref_pos + 1}")
 
     for pileup_read in pileup_column.pileups:
       read_pos = pileup_read.query_position
@@ -39,6 +41,7 @@ def process_pileup(bam, nucleotide_positions, min_base_qual, min_mapping_qual, m
       read_seq = pileup_read.alignment.query_sequence
       reads[read_id].nucleotides[ref_pos] = read_seq[read_pos]
 
+  logging.info("Processing all nt positions within the given region is complete.\n")
   return reads
 
 

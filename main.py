@@ -7,8 +7,16 @@ Created on Tue Aug  6 09:47:33 2024
 """
 import argparse
 import sys
+import logging
 from parsers import extract_nt_combo_frequencies
 from io_utils import nt_combo_stats_to_csv, get_output_file_path
+
+logging.basicConfig(
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+    datefmt="%Y-%m-%d %H:%M:%S",
+    handlers=[logging.StreamHandler(sys.stdout)]
+)
 
 def main(bam_file_path, output_file_path, nt_args):
   try:
@@ -17,6 +25,10 @@ def main(bam_file_path, output_file_path, nt_args):
       output_file_path, bam_file_path, nt_args["nucleotide_positions"]
       )
     nt_combo_stats_to_csv(nt_combo_frequencies, output_path)
+    logging.info(
+      "Processing complete.\n"
+      f"Results saved to: {output_path}"
+      )
   except Exception as e:
     logging.error(f"An error occured: {e}")
     sys.exit(1)

@@ -1,6 +1,7 @@
 import pysam
 import pandas as pd
 import os
+import logging
 from contextlib import contextmanager
 from exceptions import RefError
 
@@ -18,8 +19,8 @@ def get_output_file_path(output_file_path, bam_file_path, nt_positions):
 def nt_combo_stats_to_csv(nt_combo_stats, output_path):
   df = pd.DataFrame(nt_combo_stats, columns=['NUCLEOTIDE_COMBOS', 'FREQUENCY', 'DEPTH'])
   df.sort_values(by='FREQUENCY', ascending=False, inplace=True)
-  print("\nSelected nucleotide combinations (final results):")
-  print(df)
+
+  logging.info("Selected nucleotide combinations (final results):\n%s\n", df.to_string(index=False))
   df.to_csv(output_path, index=False)
   
 @contextmanager
