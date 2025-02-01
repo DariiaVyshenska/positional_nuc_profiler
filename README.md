@@ -18,7 +18,7 @@ Note: test files were too large to push to GitHub. Please, contact the owner if 
 ./main.py ./test_data/coreF44.fastq.gz.bam 6747 .
 
 Expected full output:
-    CODON,FREQUENCY
+    NUCLEOTIDE_COMBOS,FREQUENCY
     GCT,0.4972
     ACT,0.3437
     GTT,0.1075
