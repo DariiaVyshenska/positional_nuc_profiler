@@ -42,6 +42,6 @@ def process_pileup(bam, nucleotide_positions, min_base_qual, min_mapping_qual, m
   return reads
 
 
-def extract_codon_frequencies(bam_file, nt_args):
+def extract_nt_combo_frequencies(bam_file, nt_args):
   with open_and_validate_bam(bam_file) as bam:
     return get_combo_fr_count(process_pileup(bam, **nt_args))

@@ -15,8 +15,8 @@ def get_output_file_path(output_file_path, bam_file_path, nt_positions):
   positions_str = '-'.join(map(str, nt_positions))
   return f"{output_file_path}/{smpl_id}_{positions_str}_complex_freqs.csv"
 
-def codon_stats_to_csv(codon_stats, output_path):
-  df = pd.DataFrame(codon_stats, columns=['NUCLEOTIDE_COMBOS', 'FREQUENCY', 'DEPTH'])
+def nt_combo_stats_to_csv(nt_combo_stats, output_path):
+  df = pd.DataFrame(nt_combo_stats, columns=['NUCLEOTIDE_COMBOS', 'FREQUENCY', 'DEPTH'])
   df.sort_values(by='FREQUENCY', ascending=False, inplace=True)
   print("\nSelected nucleotide combinations (final results):")
   print(df)
