@@ -21,8 +21,14 @@ def nt_combo_stats_to_csv(nt_combo_stats, output_path):
   df = pd.DataFrame(nt_combo_stats, columns=['NUCLEOTIDE_COMBOS', 'FREQUENCY', 'DEPTH'])
   df.sort_values(by='FREQUENCY', ascending=False, inplace=True)
 
-  logging.info("Selected nucleotide combinations (final results):\n%s\n", df.to_string(index=False))
+  if not df.empty:
+    logging.info("Selected nucleotide combinations (final results):\n%s\n", df.to_string(index=False))
+  else:
+    logging.info("There were no complete nucleotide combinations found "
+                 "under given filtering criteria")
+  
   df.to_csv(output_path, index=False)
+
   
 @contextmanager
 def open_and_validate_bam(bam_file):

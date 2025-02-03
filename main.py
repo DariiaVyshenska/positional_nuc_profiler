@@ -21,6 +21,11 @@ logging.basicConfig(
 def main(bam_file_path, output_file_path, nt_args):
   try:
     nt_combo_frequencies = extract_nt_combo_frequencies(bam_file_path, nt_args)
+    
+    if not nt_combo_frequencies:
+      print("no data to support stats extraction. Exiting program... ")
+      sys.exit(0)
+    
     output_path = get_output_file_path(
       output_file_path, bam_file_path, nt_args["nucleotide_positions"]
       )

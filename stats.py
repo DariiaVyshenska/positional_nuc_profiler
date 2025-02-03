@@ -6,7 +6,9 @@ def get_combo_fr_count(reads):
     repr(read) for read in reads.values() if read.complete()
     )
   total_reads = sum(tally_complete.values())
-  
+
+  logging.info("Number of reads used for final frequency estimation: " 
+               f"{total_reads}\n")
   if total_reads == 0:
     return []
   
@@ -16,8 +18,6 @@ def get_combo_fr_count(reads):
     ]
 
   all_read_counts = Counter(repr(read) for read in reads.values()).items()
-  logging.info("Total number of reads processed across all reference " 
-               f"positions:\n{len(reads)}\n")
   logging.info(f"All detected nucleotide combinations & their depths are:\n%s\n",
                "\n".join(f"{nt}: {count}" for nt, count in all_read_counts))
   

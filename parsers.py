@@ -40,8 +40,10 @@ def process_pileup(bam, nucleotide_positions, min_base_qual, min_mapping_qual, m
       read_id = pileup_read.alignment.query_name
       read_seq = pileup_read.alignment.query_sequence
       reads[read_id].nucleotides[ref_pos] = read_seq[read_pos]
-
+      
   logging.info("Processing all nt positions within the given region is complete.\n")
+  logging.info("Total number of reads processed across all reference " 
+               f"positions: {len(reads)}\n")
   return reads
 
 
