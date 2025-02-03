@@ -33,6 +33,7 @@ def nt_combo_stats_to_csv(nt_combo_stats, output_path):
 @contextmanager
 def open_and_validate_bam(bam_file):
   try:
+    pysam.set_verbosity(0)
     with pysam.AlignmentFile(bam_file, "rb") as bam:
       try:
         bam.check_index()
