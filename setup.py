@@ -10,7 +10,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "positional_nuc_profiler = main:main",
+            "positional_nuc_profiler = positional_nuc_profiler.main:main",
         ],
     },
     include_package_data=True,
