@@ -3,8 +3,8 @@ import sys
 import os
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from parsers import extract_nt_combo_frequencies
-from exceptions import RefError
+from positional_nuc_profiler.parsers import extract_nt_combo_frequencies
+from positional_nuc_profiler.exceptions import RefError
 
 class TestParsers(unittest.TestCase):
   def setUp(self):

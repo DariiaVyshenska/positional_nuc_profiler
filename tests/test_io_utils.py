@@ -1,8 +1,8 @@
 import unittest
 import sys
 import os
-from exceptions import RefError
-from io_utils import open_and_validate_bam
+from positional_nuc_profiler.exceptions import RefError
+from positional_nuc_profiler.io_utils import open_and_validate_bam
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
