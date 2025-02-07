@@ -18,7 +18,7 @@ logging.basicConfig(
     handlers=[logging.StreamHandler(sys.stdout)]
 )
 
-def main(bam_file_path, output_file_path, nt_args):
+def run_profiler(bam_file_path, output_file_path, nt_args):
   try:
     nt_combo_frequencies = extract_nt_combo_frequencies(bam_file_path, nt_args)
     
@@ -38,10 +38,10 @@ def main(bam_file_path, output_file_path, nt_args):
     logging.error(f"An error occured: {e}")
     sys.exit(1)
 
-if __name__ == '__main__':
+def main():
   parser = argparse.ArgumentParser(description='Extracts frequencies of complex mutations from INDEXED .bam file.',
-                                  usage='Usage: ./main.py <indexed_bam_path> <output_dir> <nucleotide_positions> [--min_base_quality BASE_QUAL] [--min_mapping_quality MAP_QUAL] [--max_depth DEPTH]',
-                                  formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+                                usage='Usage: ./main.py <indexed_bam_path> <output_dir> <nucleotide_positions> [--min_base_quality BASE_QUAL] [--min_mapping_quality MAP_QUAL] [--max_depth DEPTH]',
+                                formatter_class=argparse.ArgumentDefaultsHelpFormatter)
   parser.add_argument('indexed_bam_path', type=str, help='Path to the INDEXED bam file')
   parser.add_argument('output_path', type=str, help='Path to a directory where the output CSV will be saved')
   parser.add_argument('nucleotide_positions', type=int, nargs='+', help='Two or more unique, positive nucleotide positions in the reference (1-based indexing).')
@@ -65,4 +65,7 @@ if __name__ == '__main__':
       "max_depth": args.max_depth,
   }
   
-  main(args.indexed_bam_path, args.output_path, nt_args)
+  run_profiler(args.indexed_bam_path, args.output_path, nt_args)
+
+if __name__ == '__main__':
+  main()
