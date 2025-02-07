@@ -3,7 +3,7 @@ import pandas as pd
 import os
 import logging
 from contextlib import contextmanager
-from exceptions import RefError
+from positional_nuc_profiler.exceptions import RefError
 
 def get_output_file_path(output_file_path, bam_file_path, nt_positions):
   try:

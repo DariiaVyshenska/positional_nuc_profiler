@@ -8,8 +8,8 @@ Created on Tue Aug  6 09:47:33 2024
 import argparse
 import sys
 import logging
-from parsers import extract_nt_combo_frequencies
-from io_utils import nt_combo_stats_to_csv, get_output_file_path
+from positional_nuc_profiler.parsers import extract_nt_combo_frequencies
+from positional_nuc_profiler.io_utils import nt_combo_stats_to_csv, get_output_file_path
 
 logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s",

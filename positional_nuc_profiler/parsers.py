@@ -1,11 +1,11 @@
 import pysam
 import sys
 import logging
-from stats import get_combo_fr_count
+from positional_nuc_profiler.stats import get_combo_fr_count
 from collections import defaultdict
-from io_utils import open_and_validate_bam
-from models import Read
-from exceptions import RefError
+from positional_nuc_profiler.io_utils import open_and_validate_bam
+from positional_nuc_profiler.models import Read
+from positional_nuc_profiler.exceptions import RefError
 
 def process_pileup(bam, nucleotide_positions, min_base_qual, min_mapping_qual, max_depth):
   sorted_nt_pos = sorted(nucleotide_positions)
