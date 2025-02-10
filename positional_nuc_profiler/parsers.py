@@ -24,7 +24,7 @@ def process_pileup(bam, nucleotide_positions, min_base_qual, min_mapping_qual, m
                                   stop=pileup_end, 
                                   min_base_quality=min_base_qual,
                                   min_mapping_quality=min_mapping_qual,
-                                  max_depth=max_depth, 
+                                  max_depth=max_depth, stepper='all', 
                                   truncate=True):
     ref_pos = pileup_column.reference_pos
     if ref_pos not in updated_nt_pos:
