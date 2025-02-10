@@ -17,7 +17,7 @@ pip install git+https://github.com/DariiaVyshenska/positional_nuc_profiler.git
 ```
 *Install specific version* (in this example, version 0.2)
 ```
-pip install git+https://github.com/username/positional_nuc_profiler.git@v0.2
+pip install git+https://github.com/DariiaVyshenska/positional_nuc_profiler@v0.2
 ```
 
 #### Check the version of *positional_nuc_profiler*
