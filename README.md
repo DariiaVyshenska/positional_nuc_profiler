@@ -1,7 +1,7 @@
 # Positional Nucleotide Profiler
 
 ## Introduction
-**Positional Nucleotide Profiler** analyzes nucleotide co-occurrence within sequencing reads to determine linkage between distant positions. It is particularly useful for detecting whether specific mutations (SNVs) occur on the same strand. While primarily designed for viral genome analysis, it can be used with any BAM file that contains a single reference genome.
+**Positional Nucleotide Profiler** analyzes nucleotide co-occurrence within sequencing reads to determine linkage between distant positions. It is particularly useful for detecting whether specific single nucleotide variants (SNVs) occur on the same strand. While primarily designed for viral genome analysis, it can be used with any BAM file that contains a single reference genome.
 
 _Example:_ A researcher must know if two SNVs within the sequencing read length distance appear on the same or different strand. They have 1x100bp sequencing data, and the two SNVs of interest are at reference genome positions 20 and 100.
 
@@ -15,9 +15,11 @@ To avoid conflicts, we recommend installing **positional_nuc_profiler** using a 
 ```
 pip install git+https://github.com/DariiaVyshenska/positional_nuc_profiler.git
 ```
-#### Updating to the latest version
+
+#### Check the version of *positional_nuc_profiler*
+
 ```
-pip install --no-deps --force-reinstall git+https://github.com/DariiaVyshenska/positional_nuc_profiler.git
+pip show positional_nuc_profiler
 ```
 
 #### Uninstall
