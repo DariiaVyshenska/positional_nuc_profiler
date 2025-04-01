@@ -40,7 +40,7 @@ def run_profiler(bam_file_path, output_file_path, nt_args):
 
 def main():
   parser = argparse.ArgumentParser(description='Extracts frequencies of complex mutations from INDEXED .bam file.',
-                                usage='Usage: ./main.py <indexed_bam_path> <output_dir> <nucleotide_positions> [--min_base_quality BASE_QUAL] [--min_mapping_quality MAP_QUAL] [--max_depth DEPTH]',
+                                usage='Usage: positional_nuc_profiler <indexed_bam_path> <output_dir> <nucleotide_positions> [--min_base_quality BASE_QUAL] [--min_mapping_quality MAP_QUAL] [--max_depth DEPTH]',
                                 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
   parser.add_argument('indexed_bam_path', type=str, help='Path to the INDEXED bam file')
   parser.add_argument('output_path', type=str, help='Path to a directory where the output CSV will be saved')
